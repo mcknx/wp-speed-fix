@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WordPress Speed Fix: 104 s to 4.9 s on a Slow Phone | Case Study</title>
+<meta name="description" content="Case study: a slow WordPress clinic site fixed with WP-CLI and free plugins. On simulated slow 4G the main picture showed after 104.0 s; after the fix, 4.9 s. Page weight 26.0 MB to 1.1 MB, Lighthouse mobile 55 to 78, same design. Built by McKeen Asma, WordPress & Tech VA.">
+<meta name="author" content="McKeen Asma">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WordPress speed fix: the main picture in 4.9 s instead of 104 s on a slow phone">
+<meta property="og:description" content="A slow WordPress site with 24 MB of photos, extra plugins and no caching. One repeatable fix script: page 26.0 MB to 1.1 MB, Lighthouse mobile 55 to 78, nothing visibly changed. Measured, with the scripts on GitHub.">
+<meta property="og:image" content="img/poster.jpg">
+<meta property="og:image:width" content="900">
+<meta property="og:image:height" content="506">
+<meta property="og:image:alt" content="Before and after report: Lighthouse mobile score 55 to 78; largest contentful paint 104.0 s to 4.9 s; page weight 26.0 MB to 1.1 MB">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WordPress speed fix: 104 s to 4.9 s on a slow phone">
+<meta name="twitter:description" content="A slow WordPress clinic site made fast with WP-CLI and free plugins: page 26.0 MB to 1.1 MB, Lighthouse mobile 55 to 78, same design. Real measurements, median of 3 runs.">
+<meta name="twitter:image" content="img/poster.jpg">
+<style>
+:root{--bg:#f7f8fa;--card:#fff;--ink:#14212b;--muted:#5a6b78;--line:#dde3e8;--accent:#0f7c86;--accent-soft:#e3f3f4;--hot:#e0662b}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1519;--card:#172026;--ink:#e6edf1;--muted:#9aabb6;--line:#2a3640;--accent:#4fc1ca;--accent-soft:#16343a;--hot:#ff8a52}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:32px 16px 56px}
+h1{font-size:clamp(26px,6vw,36px);line-height:1.2;margin:.2em 0 .3em}
+h2{font-size:21px;margin:40px 0 10px}
+h3{font-size:17px;margin:20px 0 4px}
+p{margin:0 0 12px}
+.tag{display:inline-block;font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+.lede{font-size:19px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:24px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.stat b{display:block;font-size:28px;color:var(--accent);line-height:1.2}
+.stat span{font-size:14px;color:var(--muted)}
+figure{margin:16px 0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}
+figure img{display:block;width:100%;height:auto;border-radius:8px}
+figcaption{font-size:14px;color:var(--muted);padding:8px 4px 0}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pair div{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin:0 0 4px}
+ol,ul{padding-left:22px;margin:0 0 12px}
+li{margin:6px 0}
+.note{font-size:14px;color:var(--muted)}
+.method{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:8px;padding:12px 16px;font-size:15px;margin:16px 0}
+.method p{margin:0 0 8px}.method p:last-child{margin:0}
+.tbl{overflow-x:auto;margin:0 0 12px}
+table{width:100%;border-collapse:collapse;font-size:15px;background:var(--card)}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.good{color:var(--accent);font-weight:600}
+.transcript p{margin:0 0 10px}
+.transcript time{display:inline-block;min-width:3.2em;font-variant-numeric:tabular-nums;color:var(--muted);font-size:14px}
+.next{margin:24px 0 0;font-size:16px}
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:15px}
+a{color:var(--accent)}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"WordPress speed fix: a slow clinic site made fast with WP-CLI and free plugins","description":"Case study of a WordPress site speed fix on a demo dental clinic site: unused plugins removed, 24 MB of photos converted to WebP, page caching, gzip and browser caching, local fonts, deferred scripts and a database cleanup. Lighthouse mobile (simulated slow 4G, median of 3 runs): score 55 to 78, largest contentful paint 104.0 s to 4.9 s, page weight 26.0 MB to 1.1 MB, with no visible change to the design.","image":"img/poster.jpg","inLanguage":"en","datePublished":"2026-10-09","author":{"@type":"Person","name":"McKeen Asma","jobTitle":"WordPress & Tech VA","url":"https://mckenneth.vercel.app","address":{"@type":"PostalAddress","addressLocality":"Davao City","addressCountry":"PH"}},"about":["WordPress speed optimization","Core Web Vitals","Largest Contentful Paint","image optimization","WP-CLI","website maintenance"],"keywords":"WordPress speed optimization, site speed, Core Web Vitals, LCP, PageSpeed, Lighthouse, WebP, page caching, plugin cleanup, database cleanup, WP-CLI, Elementor, WordPress maintenance, virtual assistant, dental clinic","isBasedOn":{"@type":"SoftwareSourceCode","name":"wp-speed-fix","codeRepository":"https://github.com/mcknx/wp-speed-fix","license":"https://opensource.org/licenses/MIT"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"VideoObject","name":"WordPress speed fix demo: slow site to fast site, measured","description":"89-second demo: a demo dental clinic's WordPress site loads on a phone over simulated slow 4G (142.7 s, 25.7 MB), Lighthouse scores it 55, the real fix.sh runs (WP-CLI and free plugins), then the same phone load finishes in about 10 s and the before/after report shows 55 to 78 and 26.0 MB to 1.1 MB. Waiting time is cut and captioned; the on-screen timers show real time.","thumbnailUrl":"img/poster.jpg","contentUrl":"demo/p4-demo.mp4","uploadDate":"2026-10-09","duration":"PT1M29S","inLanguage":"en","creator":{"@type":"Person","name":"McKeen Asma"},"transcript":"A slow clinic website loses patients before the page even shows. And Google uses page speed as a ranking signal. Here's Bayview Dental, a demo WordPress site, on a phone over simulated slow 4G. Fresh visit, empty cache. Watch the timer and the megabytes. Lighthouse mobile, median of three runs: a score of 55. The page weighs 26 megabytes, and the main image takes 104 seconds to show. The fix is one repeatable script, WordPress command line and free plugins only. It removes unused plugins and shrinks the photos to WebP. Then page caching, compression, local fonts, deferred scripts, and a clean database. Same phone, same simulated slow 4G, same empty cache. This time it's done in seconds. The score goes from 55 to 78, and the page from 26 megabytes down to about 1.1. Same design, same content, just faster. Built by McKeen Asma, WordPress and Tech VA."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Will speeding up my site break it or change how it looks?","acceptedAnswer":{"@type":"Answer","text":"I work on a backup and a staging copy first, never straight on the live site. In this demo the fix is checked automatically: every heading from before must still be on the page after, at desktop and phone width, and full-page screenshots before and after differed by less than 0.1% of pixels (from re-compressing the photos). If a step breaks something on your site, it is rolled back before anything goes live."}},{"@type":"Question","name":"Do I need to buy a premium plugin?","acceptedAnswer":{"@type":"Answer","text":"Not for this fix. It used WP-CLI, ImageMagick and cwebp for the photos, and Cache Enabler, a free plugin from WordPress.org, for page caching. If your site already has a paid speed plugin, I would work with it rather than add another."}},{"@type":"Question","name":"Will my site score 78 too?","acceptedAnswer":{"@type":"Answer","text":"I cannot promise a number. Every site, theme and host is different, and Lighthouse scores move a few points between runs. What I can promise is a measured before and after on your own site, with the same method, so you see exactly what changed."}},{"@type":"Question","name":"Why not 100?","acceptedAnswer":{"@type":"Answer","text":"On this demo the main picture is part of an Elementor slideshow that needs JavaScript, and the theme and builder load many small stylesheets. Getting closer to 100 would mean rebuilding the design, which is a different job. The big win for visitors, a page 96% lighter whose main picture shows in seconds, needed no redesign."}},{"@type":"Question","name":"Is this a real client site?","acceptedAnswer":{"@type":"Answer","text":"No. Bayview Dental is a demo clinic I built on WordPress the way real client sites often end up slow: big camera photos, plugins nobody uses, no caching. The measurements are real, taken on my machine with Lighthouse. There is no paying client here."}}]}
+</script>
+</head>
+<body>
+<main>
+<article>
+<header>
+<span class="tag">Case study · WordPress speed fix</span>
+<h1>Slow WordPress site fixed: patients on a phone see the page in 4.9 seconds, not 104</h1>
+<p class="lede">On a slow mobile connection, people opening this clinic's website waited 104 seconds before the main picture appeared. After my fix they wait 4.9 seconds. The page is 96% lighter, nothing on it looks different, and the whole fix is one script using free tools.</p>
+<p class="code-link"><a href="https://github.com/mcknx/wp-speed-fix">View the code on GitHub →</a></p>
+</header>
+
+<figure id="demo-video"><video controls preload="metadata" playsinline src="demo/p4-demo.mp4" poster="img/poster.jpg" style="display:block;width:100%;height:auto;border-radius:8px" aria-describedby="transcript-intro"></video><figcaption>The 89-second demo, narrated in my own voice (AI voice clone). The same phone loads the site before and after the fix; the video cuts the waiting time and says so on screen, and the timers show the real time. Prefer reading? The <a href="#transcript">full transcript</a> is below.</figcaption></figure>
+
+<div class="stats">
+<div class="stat"><b>99 s less waiting</b><span>main picture on a slow phone connection: 4.9 s instead of 104 s</span></div>
+<div class="stat"><b>96% lighter</b><span>26.0 MB down to 1.1 MB: less waiting and less mobile data for every visitor</span></div>
+<div class="stat"><b>Looks the same</b><span>every heading, photo, button and the booking form still there</span></div>
+</div>
+
+<section id="plain-words">
+<h2>What changes for the clinic</h2>
+<ul>
+<li><b>Before:</b> a patient taps the clinic's link on mobile data and stares at a blank screen. In the filmed test the page took 142.7 seconds to finish loading. Many people give up long before that.</li>
+<li><b>After:</b> same phone, same slow connection: the page is done in about 10 seconds, and the "Book an appointment" button is there to tap.</li>
+<li><b>Also:</b> Google counts page speed when ranking sites, and its Lighthouse score for this page went from 55 to 78.</li>
+<li><b>For you as the owner:</b> no redesign, no new paid tools, nothing to learn. The site you know, just faster. The fix script ran in under 3 minutes and can be run again.</li>
+</ul>
+</section>
+<section id="your-site">
+<h2>What I'd do on your site</h2>
+<ol>
+<li><b>Backup first:</b> a full copy of your files and database, kept off the server, before anything changes.</li>
+<li><b>Staging copy:</b> I work on a copy of your site (your host's staging or a private copy), not the live one.</li>
+<li><b>Measure:</b> Lighthouse on your key pages, median of 3 runs, plus Google's real-visitor data where your site has it.</li>
+<li><b>Fix, one step at a time:</b> photos, unused plugins, caching, fonts, scripts, database, checking the pages after each step.</li>
+<li><b>Re-measure</b> with the same method, so the before and after are fair.</li>
+<li><b>Report:</b> a one-page before/after like the one above, what I changed and why. Changes go live only when you approve.</li>
+</ol>
+<p><b>What you get:</b> the backup, the before/after report, a list of every change, and if you want ongoing care, a monthly routine to keep it fast: plugin and theme updates on staging first, removing plugins you no longer use, a database cleanup and a fresh speed check.</p>
+<p class="note">I haven't done this on a paying client's site yet; this demo is how I'd work on yours.</p>
+</section>
+
+<section id="looks-the-same">
+<h2>Nothing visibly changed</h2>
+<div class="pair">
+<figure><div>Before</div><img src="img/before-375.jpg" width="375" height="812" alt="Bayview Dental home page on a phone before the fix: hero photo of a dental chair, the headline Gentle dental care in the heart of Davao City, and two buttons"></figure>
+<figure><div>After</div><img src="img/after-375.jpg" width="375" height="812" alt="The same home page on a phone after the fix, looking the same"></figure>
+</div>
+<p>The fix is checked, not eyeballed: every heading from the old page must still be on the new page (17 of 17, at desktop and phone width), and full-page screenshots before and after differ by less than 0.1% of pixels, which is the photos being re-compressed.</p>
+</section>
+
+<section id="results">
+<h2>Results</h2>
+<div class="tbl"><table>
+<thead><tr><th>Measure</th><th class="n">Before</th><th class="n">After</th></tr></thead>
+<tbody>
+<tr><td>Google Lighthouse score (mobile, out of 100)</td><td class="n">55</td><td class="n good">78</td></tr>
+<tr><td>Main picture appears (Largest Contentful Paint)</td><td class="n">104.0 s</td><td class="n good">4.9 s</td></tr>
+<tr><td>Anything appears (First Contentful Paint)</td><td class="n">6.2 s</td><td class="n good">2.6 s</td></tr>
+<tr><td>Page visibly filled in (Speed Index)</td><td class="n">18.5 s</td><td class="n good">2.6 s</td></tr>
+<tr><td>Page frozen by scripts (Total Blocking Time)</td><td class="n">21 ms</td><td class="n good">0 ms</td></tr>
+<tr><td>Layout jumping (Cumulative Layout Shift)</td><td class="n">0</td><td class="n">0.011</td></tr>
+<tr><td>Page size to download</td><td class="n">26.0 MB</td><td class="n good">1.1 MB</td></tr>
+<tr><td>Files downloaded</td><td class="n">66</td><td class="n good">55</td></tr>
+</tbody></table></div>
+<figure><img src="img/poster.jpg" width="900" height="506" loading="lazy" alt="The before and after report: score 55 to 78 (+23 points), Largest Contentful Paint 104.0 s to 4.9 s, page weight 26.0 MB to 1.1 MB, and the list of what fix.sh changed"><figcaption>The before/after report the script writes from the measurements, the kind of one-page summary I send a client.</figcaption></figure>
+<div class="method" id="method">
+<p><b>How this was measured.</b> Google Lighthouse 13.5.0, mobile, simulated slow 4G and a slower phone CPU, performance only. Each number is the median of 3 runs, and scores vary by a few points between runs. The site ran on my own machine (localhost), so a real web host adds its own delay on top.</p>
+<p><b>Honest note:</b> Bayview Dental is a demo clinic I built on WordPress, the same fictional clinic as my other case studies. It was made slow the way real sites get slow (camera-size photos, plugins nobody uses, no caching), with nothing faked like artificial delays. There is no paying client here. The numbers are real, from the committed run.</p>
+</div>
+<figure><img src="img/lighthouse.jpg" width="900" height="506" loading="lazy" alt="Google Lighthouse report for the slow site: performance 55, First Contentful Paint 6.2 s, Largest Contentful Paint 104.0 s"><figcaption>The real Lighthouse report for the slow site (the run with the median score). Its other numbers differ slightly from the medians in the table.</figcaption></figure>
+</section>
+
+<section id="problem">
+<h2>The problem: a site that looks fine on office Wi-Fi</h2>
+<p>The site looked fine on a fast connection, so nobody noticed. Underneath:</p>
+<ul>
+<li><b>12 photos straight from a camera</b>, 3200 px wide and up to 3 MB each, 24 MB in total, shown at full size.</li>
+<li><b>Plugins nobody used</b> still loading their files on every page: a slider, a second form builder, an icon pack, an Instagram feed with no feed.</li>
+<li><b>No page cache and no compression</b>, so every visit rebuilt and resent the whole page.</li>
+<li><b>Three Google Font families</b> in every weight, fetched from Google's servers.</li>
+<li><b>13 scripts blocking the page</b> while they loaded.</li>
+<li><b>Database clutter:</b> 362 old revisions, 603 expired temporary entries, 250 spam comments.</li>
+</ul>
+</section>
+
+<section id="fix">
+<h2>The fix: one script, six steps</h2>
+<p>Everything is done with WP-CLI (WordPress's command line) and free tools, in one script that can be run again safely:</p>
+<ol>
+<li><b>Plugins.</b> Removed the 3 unused ones (active plugins 7 → 4). The form and Instagram files now load only on pages that use them.</li>
+<li><b>Photos.</b> Resized to at most 1920 px and converted to WebP: 24,286 KB → 1,246 KB. Real smaller sizes for phones, lazy-loading for photos further down, and the main picture loaded first.</li>
+<li><b>Caching.</b> Page cache with Cache Enabler (free), gzip compression and browser-cache headers. The page's HTML went from 148,928 bytes to 24,945 bytes over the wire.</li>
+<li><b>Fonts.</b> Elementor's fonts served from the site itself with <code>font-display: swap</code>, so text shows right away (requests to Google Fonts 3 → 1). Emoji script off.</li>
+<li><b>Scripts.</b> Deferred with WordPress's own loading strategy: render-blocking scripts 13 → 0, and the slideshow still works.</li>
+<li><b>Database.</b> Revisions, expired entries and spam cleared (362, 603 and 250 → 0), then the tables optimised.</li>
+</ol>
+</section>
+
+<section id="desktop">
+<h2>Desktop, before and after</h2>
+<div class="pair">
+<figure><div>Before</div><img src="img/before-1280.jpg" width="1280" height="720" loading="lazy" alt="Bayview Dental home page at desktop width before the fix"></figure>
+<figure><div>After</div><img src="img/after-1280.jpg" width="1280" height="720" loading="lazy" alt="The same page at desktop width after the fix, looking the same"></figure>
+</div>
+</section>
+
+<section id="tools">
+<h2>Tools used</h2>
+<ul>
+<li><b>WordPress</b> with Astra and Elementor, in Docker; <b>WP-CLI</b> for every change.</li>
+<li><b>ImageMagick + cwebp</b> for the photos; <b>Cache Enabler</b> (free) for page caching; Apache gzip and Expires rules.</li>
+<li><b>Google Lighthouse 13.5.0</b> to measure; <b>Playwright</b> to screenshot and check that nothing visible changed.</li>
+</ul>
+<p><a href="https://github.com/mcknx/wp-speed-fix">View the code on GitHub →</a> (slow-site setup, fix.sh, measure and check scripts, MIT licence)</p>
+</section>
+
+<section id="faq">
+<h2>FAQ</h2>
+<h3>Will speeding up my site break it or change how it looks?</h3>
+<p>I work on a backup and a staging copy first, never straight on the live site. In this demo the fix is checked automatically: every heading from before must still be on the page after, at desktop and phone width, and full-page screenshots before and after differed by less than 0.1% of pixels (from re-compressing the photos). If a step breaks something on your site, it is rolled back before anything goes live.</p>
+<h3>Do I need to buy a premium plugin?</h3>
+<p>Not for this fix. It used WP-CLI, ImageMagick and cwebp for the photos, and Cache Enabler, a free plugin from WordPress.org, for page caching. If your site already has a paid speed plugin, I would work with it rather than add another.</p>
+<h3>Will my site score 78 too?</h3>
+<p>I cannot promise a number. Every site, theme and host is different, and Lighthouse scores move a few points between runs. What I can promise is a measured before and after on your own site, with the same method, so you see exactly what changed.</p>
+<h3>Why not 100?</h3>
+<p>On this demo the main picture is part of an Elementor slideshow that needs JavaScript, and the theme and builder load many small stylesheets. Getting closer to 100 would mean rebuilding the design, which is a different job. The big win for visitors, a page 96% lighter whose main picture shows in seconds, needed no redesign.</p>
+<h3>Is this a real client site?</h3>
+<p>No. Bayview Dental is a demo clinic I built on WordPress the way real client sites often end up slow: big camera photos, plugins nobody uses, no caching. The measurements are real, taken on my machine with Lighthouse. There is no paying client here.</p>
+</section>
+
+<section id="transcript" class="transcript">
+<h2>Video transcript</h2>
+<p id="transcript-intro" class="note">Full narration of the 89-second demo video, with start times.</p>
+<p><time>0:00</time> A slow clinic website loses patients before the page even shows. And Google uses page speed as a ranking signal.</p>
+<p><time>0:08</time> Here&#x27;s Bayview Dental, a demo WordPress site, on a phone over simulated slow 4G. Fresh visit, empty cache. Watch the timer and the megabytes.</p>
+<p><time>0:30</time> Lighthouse mobile, median of three runs: a score of 55. The page weighs 26 megabytes, and the main image takes 104 seconds to show.</p>
+<p><time>0:40</time> The fix is one repeatable script, WordPress command line and free plugins only. It removes unused plugins and shrinks the photos to WebP. Then page caching, compression, local fonts, deferred scripts, and a clean database.</p>
+<p><time>0:58</time> Same phone, same simulated slow 4G, same empty cache. This time it&#x27;s done in seconds.</p>
+<p><time>1:13</time> The score goes from 55 to 78, and the page from 26 megabytes down to about 1.1. Same design, same content, just faster.</p>
+<p><time>1:24</time> Built by McKeen Asma, WordPress and Tech VA.</p>
+</section>
+
+<p class="next">Same clinic: <a href="https://mckenneth.vercel.app/case-studies/ai-lead-responder/">AI lead responder</a> (the lead form) · <a href="https://mckenneth.vercel.app/case-studies/clinic-chat-assistant/">clinic chat assistant</a> (website chat and booking) · <a href="https://mckenneth.vercel.app/case-studies/inbox-triage/">AI inbox triage</a> (email and invoices)</p>
+
+<footer>
+<b>McKeen Asma</b> · WordPress &amp; Tech VA · Davao, Philippines<br>
+Portfolio: <a href="https://mckenneth.vercel.app">mckenneth.vercel.app</a>
+</footer>
+</article>
+</main>
+</body>
+</html>

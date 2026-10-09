@@ -1,0 +1,223 @@
+{
+  "marks": {
+    "title": 0.02,
+    "before": 7.8,
+    "beforeLoaded": 150.65,
+    "lh": 154.87,
+    "fix": 161.91,
+    "f1": 167.44,
+    "f2": 252.2,
+    "f3": 353.12,
+    "f4": 374.92,
+    "f5": 421.03,
+    "f6": 421.07,
+    "fdone": 511.1,
+    "fixEnd": 511.83,
+    "after": 514.86,
+    "afterLoaded": 524.87,
+    "report": 528.25,
+    "end": 538.24,
+    "stop": 543.25
+  },
+  "throttling": {
+    "offline": false,
+    "latency": 562.5,
+    "downloadThroughput": 188743.68,
+    "uploadThroughput": 86400,
+    "cpu": 4,
+    "preset": "Lighthouse 13 mobileSlow4G (devtools values)"
+  },
+  "before": {
+    "seconds": 142.7,
+    "mb": 25.69
+  },
+  "fixLog": [
+    "[fix] 1/6 plugins: remove the unused ones, load plugin assets only where they are used",
+    "[fix]     active plugins 7 → 4; stylesheets+scripts on home 39 → 33",
+    "[fix] 2/6 images: max 1920 px, WebP q78, real srcset sizes, native lazy-loading back on, hero preloaded",
+    "Success: Query succeeded. Rows affected: 12",
+    "[fix]     12 photos: 24286 KB JPEG → 1246 KB WebP (+ smaller sizes for srcset)",
+    "[fix] 3/6 page cache (Cache Enabler) + gzip + browser caching headers",
+    "[fix]     home HTML over the wire: 148928 B → 24945 B gzip; WP_CACHE=1",
+    "[fix]     headers: HTML gzip, CSS Expires",
+    "[fix] 4/6 fonts: Google Fonts served from this site with font-display: swap; emoji script off",
+    "[fix]     requests to fonts.googleapis.com 3 → 1; emoji script 1 → 0",
+    "[fix] 5/6 JavaScript: defer (WordPress keeps a script blocking only where inline code needs it)",
+    "[fix]     render-blocking scripts 13 → 0",
+    "[fix] 6/6 database: revisions, expired transients, spam, optimize",
+    "[fix]     revisions 362 → 0, expired transients 603 → 0, spam 250 → 0",
+    "[fix] done"
+  ],
+  "after": {
+    "seconds": 10,
+    "mb": 0.97
+  },
+  "plan": [
+    {
+      "id": "1-hook",
+      "kind": "hold",
+      "ss": 0,
+      "src": 7.78,
+      "dur": 7.98,
+      "at": 0,
+      "vs": 0.4,
+      "ch": 0,
+      "cut": 0
+    },
+    {
+      "id": "2-before",
+      "kind": "live",
+      "ss": 7.5,
+      "src": 14.063,
+      "dur": 14.06,
+      "at": 7.98,
+      "vs": 8.38,
+      "ch": 1,
+      "cut": 0
+    },
+    {
+      "id": null,
+      "kind": "wait",
+      "ss": 21.563,
+      "src": 128.787,
+      "dur": 3.5,
+      "at": 22.04,
+      "vs": null,
+      "ch": 1,
+      "cut": 125.3
+    },
+    {
+      "id": null,
+      "kind": "live",
+      "ss": 150.35,
+      "src": 4.22,
+      "dur": 4.22,
+      "at": 25.54,
+      "vs": null,
+      "ch": 1,
+      "cut": 0
+    },
+    {
+      "id": "3-score",
+      "kind": "hold",
+      "ss": 154.57,
+      "src": 7.04,
+      "dur": 10.58,
+      "at": 29.76,
+      "vs": 30.16,
+      "ch": 2,
+      "cut": 0
+    },
+    {
+      "id": "4-fix",
+      "kind": "live",
+      "ss": 161.61,
+      "src": 6.53,
+      "dur": 6.53,
+      "at": 40.34,
+      "vs": 40.74,
+      "ch": 3,
+      "cut": 0
+    },
+    {
+      "id": null,
+      "kind": "wait",
+      "ss": 168.14,
+      "src": 83.76,
+      "dur": 1.8,
+      "at": 46.87,
+      "vs": null,
+      "ch": 3,
+      "cut": 82
+    },
+    {
+      "id": null,
+      "kind": "wait",
+      "ss": 251.9,
+      "src": 100.92,
+      "dur": 1.8,
+      "at": 48.67,
+      "vs": null,
+      "ch": 3,
+      "cut": 99.1
+    },
+    {
+      "id": null,
+      "kind": "wait",
+      "ss": 352.82,
+      "src": 21.8,
+      "dur": 1.8,
+      "at": 50.47,
+      "vs": null,
+      "ch": 3,
+      "cut": 20
+    },
+    {
+      "id": null,
+      "kind": "wait",
+      "ss": 374.62,
+      "src": 46.11,
+      "dur": 1.8,
+      "at": 52.27,
+      "vs": null,
+      "ch": 3,
+      "cut": 44.3
+    },
+    {
+      "id": null,
+      "kind": "wait",
+      "ss": 420.73,
+      "src": 90.07,
+      "dur": 1.8,
+      "at": 54.07,
+      "vs": null,
+      "ch": 3,
+      "cut": 88.3
+    },
+    {
+      "id": null,
+      "kind": "hold",
+      "ss": 510.8,
+      "src": 2.46,
+      "dur": 2.46,
+      "at": 55.87,
+      "vs": null,
+      "ch": 3,
+      "cut": 0
+    },
+    {
+      "id": "5-after",
+      "kind": "hold",
+      "ss": 513.36,
+      "src": 14.59,
+      "dur": 14.59,
+      "at": 58.33,
+      "vs": 58.73,
+      "ch": 4,
+      "cut": 0
+    },
+    {
+      "id": "6-report",
+      "kind": "hold",
+      "ss": 527.95,
+      "src": 9.99,
+      "dur": 10.9,
+      "at": 72.92,
+      "vs": 73.32,
+      "ch": 5,
+      "cut": 0
+    },
+    {
+      "id": "7-end",
+      "kind": "hold",
+      "ss": 537.94,
+      "src": 5.01,
+      "dur": 5.51,
+      "at": 83.82,
+      "vs": 84.22,
+      "ch": 6,
+      "cut": 0
+    }
+  ],
+  "seconds": 89.33
+}

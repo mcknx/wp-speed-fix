@@ -1,0 +1,9 @@
+[
+ {"id": "1-hook", "text": "A slow clinic website loses patients before the page even shows. And Google uses page speed as a ranking signal."},
+ {"id": "2-before", "text": "Here's Bayview Dental, a demo WordPress site, on a phone over simulated slow 4G. Fresh visit, empty cache. Watch the timer and the megabytes."},
+ {"id": "3-score", "text": "Lighthouse mobile, median of three runs: a score of {score0}. The page weighs {mb0} megabytes, and the main image takes {lcp0} seconds to show."},
+ {"id": "4-fix", "text": "The fix is one repeatable script, WordPress command line and free plugins only. It removes unused plugins and shrinks the photos to WebP. Then page caching, compression, local fonts, deferred scripts, and a clean database."},
+ {"id": "5-after", "text": "Same phone, same simulated slow 4G, same empty cache. This time it's done in seconds."},
+ {"id": "6-report", "text": "The score goes from {score0} to {score1}, and the page from {mb0} megabytes down to about {mb1}. Same design, same content, just faster."},
+ {"id": "7-end", "text": "Built by McKeen Asma, WordPress and Tech V A."}
+]

@@ -1,0 +1,48 @@
+{
+  "label": "before",
+  "at": "2026-10-09T00:17:30.517Z",
+  "url": "http://localhost:8091/",
+  "runs": [
+    {
+      "score": 55,
+      "lcp_ms": 103972,
+      "fcp_ms": 6206,
+      "tbt_ms": 11,
+      "cls": 0,
+      "speed_index_ms": 18455,
+      "total_bytes": 25996006,
+      "requests": 66
+    },
+    {
+      "score": 55,
+      "lcp_ms": 103959,
+      "fcp_ms": 6202,
+      "tbt_ms": 26,
+      "cls": 0,
+      "speed_index_ms": 17367,
+      "total_bytes": 25996146,
+      "requests": 66
+    },
+    {
+      "score": 55,
+      "lcp_ms": 103972,
+      "fcp_ms": 6224,
+      "tbt_ms": 21,
+      "cls": 0,
+      "speed_index_ms": 18760,
+      "total_bytes": 25996104,
+      "requests": 66
+    }
+  ],
+  "median": {
+    "score": 55,
+    "lcp_ms": 103972,
+    "fcp_ms": 6206,
+    "tbt_ms": 21,
+    "cls": 0,
+    "speed_index_ms": 18455,
+    "total_bytes": 25996104,
+    "requests": 66
+  },
+  "lighthouse": "13.5.0"
+}

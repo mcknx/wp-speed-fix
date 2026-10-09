@@ -1,0 +1,60 @@
+# Bayview Dental — deliberately slow WordPress site for the speed-fix demo.
+# docker compose -p va-p4 up -d   →  http://localhost:8091  (admin/admin, local only)
+x-db-env: &dbenv
+  WORDPRESS_DB_HOST: db
+  WORDPRESS_DB_USER: wp
+  WORDPRESS_DB_PASSWORD: wp
+  WORDPRESS_DB_NAME: wordpress
+
+services:
+  db:
+    image: mariadb:11
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wp
+      MARIADB_PASSWORD: wp
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  wp:
+    image: wordpress:php8.3-apache
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8091:80"
+    environment: *dbenv
+    # The stock image ships mod_deflate and mod_expires but leaves mod_expires off, so the
+    # slow site sends no Expires headers. fix.sh's .htaccess rules only bite once it is on;
+    # enabling the module here changes nothing until those rules exist.
+    command: ["bash", "-c", "a2enmod expires headers deflate >/dev/null && rm -f /etc/apache2/mods-enabled/deflate.conf && exec docker-entrypoint.sh apache2-foreground"]
+    volumes:
+      - wp:/var/www/html
+      - ./assets/photos:/photos:ro
+      - ./snapshot:/snap
+
+  cli:
+    image: wordpress:cli-php8.3
+    user: "33:33"
+    profiles: ["cli"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      <<: *dbenv
+      WP_CLI_CACHE_DIR: /tmp/wp-cli-cache
+    volumes:
+      - wp:/var/www/html
+      - ./assets/photos:/photos:ro
+      - ./snapshot:/snap
+      - ./php:/php:ro
+
+volumes:
+  db:
+  wp:
