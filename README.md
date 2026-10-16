@@ -2,7 +2,32 @@
 
 This is a slow WordPress site for **Bayview Dental**, a fictional clinic in Davao City. It is built the way real client sites end up slow. One script, `fix.sh`, fixes it, and Lighthouse measures the site before and after. Everything runs locally in Docker and is driven only by WP-CLI and the shell.
 
-Live case study (with the 89-second demo video): https://mckenneth.vercel.app/case-studies/wp-speed-fix/
+**What this proves:** one shell script (`fix.sh`, WP-CLI only) takes a bloated Elementor site from a 26 MB page to about 1 MB and the main image on a slow phone from about 104 s to under 5 s. `./check.sh` then checks with Lighthouse and screenshots that the speed went up and the page still looks the same.
+
+[![Demo: the slow site loading on a simulated slow phone, Lighthouse 55, fix.sh running, the fixed site loading, the before/after report](demo/demo.gif)](demo/p4-demo.mp4)
+
+16-second preview at 5x speed. Click it for the full 89-second narrated demo (`demo/p4-demo.mp4`).
+
+**Live case study:** https://mckenneth.vercel.app/case-studies/wp-speed-fix/
+
+**`./check.sh`, run again on 16 Oct 2026** (reset to the slow snapshot, then measure, fix, measure again; real output, shortened):
+
+```text
+[measure] before median: {"score":53,"lcp_ms":111547,"total_bytes":25996091,"requests":66}
+[fix] 1/6 plugins … 6/6 database
+[measure] after median:  {"score":78,"lcp_ms":4868,"total_bytes":1056857,"requests":55}
+PASS  score +25 ≥ +15
+PASS  page weight 4.1% of before ≤ 40%
+PASS  LCP 4868 ms < 111547 ms
+PASS  1280px: 17/17 section headings visible
+PASS  1280px: pixel diff 0.054% (3416 of 6316800 px) ≤ 1%
+PASS  375px: 17/17 section headings visible
+PASS  375px: pixel diff 0.074% (2516 of 3411750 px) ≤ 1%
+```
+
+The first run of this check failed the 1280px pixel diff (1.84%). Another heavy check was running on the same machine, and two 3 MB photos had not painted yet in the *before* screenshot. Re-taking the before screenshot with the machine idle gave the PASS lines above.
+
+**Caveat:** Bayview Dental is a fictional clinic and this is a demo site, not client work. It is measured on localhost with Lighthouse's simulated slow 4G, so a real host adds its own delay (see Honest notes).
 
 ## Results
 
